@@ -9,9 +9,10 @@ export default function Navbar() {
         </Link>
 
         <div className="flex gap-6 text-sm font-medium text-gray-700">
-          <Link href="/tools/manual-slip-converter">Manual Converter</Link>
-          <Link href="/tools/odds-converter">Odds Converter</Link>
-          <Link href="/ai-assistant">AI Assistant</Link>
+            <Link href="/tools/manual-slip-converter">Manual Converter</Link>
+            <Link href="/tools/odds-converter">Odds Converter</Link>
+            <Link href="/tools/implied-probability">Probability</Link>
+             <Link href="/tools/profit-calculator">Profit</Link>
         </div>
       </nav>
     </header>
