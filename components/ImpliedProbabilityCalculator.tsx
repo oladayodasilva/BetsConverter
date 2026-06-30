@@ -21,33 +21,39 @@ export default function ImpliedProbabilityCalculator() {
 
   return (
     <div className="grid gap-8 lg:grid-cols-2">
-      <div className="rounded-xl border bg-white p-6 shadow-sm">
-        <h2 className="mb-4 text-2xl font-bold">Implied Probability Calculator</h2>
+      <div className="rounded-xl border border-gray-200 bg-white p-6 text-slate-900 shadow-sm">
+        <h2 className="mb-4 text-2xl font-bold text-slate-900">
+          Implied Probability Calculator
+        </h2>
 
         <div className="space-y-4">
           <input
             value={decimalOdds}
             onChange={(e) => setDecimalOdds(e.target.value)}
-            className="w-full rounded-lg border px-3 py-2"
+            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-slate-900 placeholder:text-slate-400"
             placeholder="Decimal odds e.g. 2.50"
           />
 
           <button
             onClick={handleCalculate}
-            className="w-full rounded-lg bg-green-700 px-4 py-3 font-semibold text-white"
+            className="w-full rounded-lg bg-green-700 px-4 py-3 font-semibold text-white transition-colors hover:bg-green-800"
           >
             Calculate Probability
           </button>
         </div>
       </div>
 
-      <div className="rounded-xl border bg-white p-6 shadow-sm">
-        <h2 className="mb-4 text-2xl font-bold">Result</h2>
+      <div className="rounded-xl border border-gray-200 bg-white p-6 text-slate-900 shadow-sm">
+        <h2 className="mb-4 text-2xl font-bold text-slate-900">Result</h2>
 
-        {error && <div className="rounded-lg bg-red-50 p-4 text-red-700">{error}</div>}
+        {error && (
+          <div className="rounded-lg bg-red-50 p-4 text-red-700">{error}</div>
+        )}
 
         {result === null && !error && (
-          <p className="text-gray-500">Enter decimal odds to calculate probability.</p>
+          <p className="text-slate-600">
+            Enter decimal odds to calculate probability.
+          </p>
         )}
 
         {result !== null && (

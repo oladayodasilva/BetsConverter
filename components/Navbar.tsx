@@ -8,13 +8,64 @@ export default function Navbar() {
           BetsConverter
         </Link>
 
-        <div className="flex gap-6 text-sm font-medium text-black-700">
-          <Link href="/tools/manual-slip-converter">Manual Converter</Link>
-          <Link href="/tools/odds-converter">Odds</Link>
-          <Link href="/tools/profit-calculator">Profit</Link>
-          <Link href="/tools/accumulator-calculator">Accumulator</Link>
-          <Link href="/tools/cashout-calculator">Cashout</Link>
-          <Link href="/tools/arbitrage-calculator">Arbitrage</Link>
+        <div className="flex gap-6 text-sm font-medium text-slate-800">
+          <Link
+            href="/tools/manual-slip-converter"
+            className="transition-colors hover:text-green-700"
+          >
+            Manual Converter
+          </Link>
+
+          <Link
+            href="/tools/odds-converter"
+            className="transition-colors hover:text-green-700"
+          >
+            Odds
+          </Link>
+
+          <Link
+            href="/tools/profit-calculator"
+            className="transition-colors hover:text-green-700"
+          >
+            Profit
+          </Link>
+
+          <Link
+            href="/tools/accumulator-calculator"
+            className="transition-colors hover:text-green-700"
+          >
+            Accumulator
+          </Link>
+
+          <Link
+            href="/tools/cashout-calculator"
+            className="transition-colors hover:text-green-700"
+          >
+            Cashout
+          </Link>
+
+          <Link
+            href="/tools/arbitrage-calculator"
+            className="transition-colors hover:text-green-700"
+          >
+            Arbitrage
+          </Link>
+
+          <Link 
+            href="/dashboard"
+            className="transition-colors hover:text-green-700"
+          >
+            Dashboard
+          </Link>
+          
+          <Link 
+            href="/login"
+            className="transition-colors hover:text-green-700"
+            >
+              Login
+          </Link>
+
+
         </div>
       </nav>
     </header>

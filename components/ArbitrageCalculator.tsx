@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { calculateArbitrage } from "@/lib/calculations/arbitrage";
+import SaveCalculationButton from "@/components/SaveCalculationButton";
 
 type OutcomeInput = {
   name: string;
@@ -55,30 +56,39 @@ export default function ArbitrageCalculator() {
 
   return (
     <div className="grid gap-8 lg:grid-cols-2">
-      <div className="rounded-xl border bg-white p-6 shadow-sm">
-        <h2 className="mb-4 text-2xl font-bold">Arbitrage Calculator</h2>
+      <div className="rounded-xl border border-gray-200 bg-white p-6 text-slate-900 shadow-sm">
+        <h2 className="mb-4 text-2xl font-bold text-slate-900">
+          Arbitrage Calculator
+        </h2>
 
         <div className="space-y-4">
           <div>
-            <label className="mb-1 block text-sm font-medium">Total Bankroll</label>
+            <label className="mb-1 block text-sm font-medium text-slate-700">
+              Total Bankroll
+            </label>
             <input
               value={bankroll}
               onChange={(e) => setBankroll(e.target.value)}
-              className="w-full rounded-lg border px-3 py-2"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-slate-900 placeholder:text-slate-400"
               placeholder="Example: 100000"
             />
           </div>
 
           <div className="space-y-3">
             {outcomes.map((outcome, index) => (
-              <div key={index} className="rounded-lg border p-3">
+              <div
+                key={index}
+                className="rounded-lg border border-gray-200 p-3 text-slate-900"
+              >
                 <div className="mb-2 flex items-center justify-between">
-                  <p className="text-sm font-semibold">Outcome {index + 1}</p>
+                  <p className="text-sm font-semibold text-slate-800">
+                    Outcome {index + 1}
+                  </p>
 
                   {outcomes.length > 2 && (
                     <button
                       onClick={() => removeOutcome(index)}
-                      className="text-sm text-red-600"
+                      className="text-sm font-medium text-red-600 hover:text-red-700"
                     >
                       Remove
                     </button>
@@ -89,14 +99,14 @@ export default function ArbitrageCalculator() {
                   <input
                     value={outcome.name}
                     onChange={(e) => updateOutcome(index, "name", e.target.value)}
-                    className="rounded-lg border px-3 py-2"
+                    className="rounded-lg border border-gray-300 px-3 py-2 text-slate-900 placeholder:text-slate-400"
                     placeholder="Outcome name"
                   />
 
                   <input
                     value={outcome.odds}
                     onChange={(e) => updateOutcome(index, "odds", e.target.value)}
-                    className="rounded-lg border px-3 py-2"
+                    className="rounded-lg border border-gray-300 px-3 py-2 text-slate-900 placeholder:text-slate-400"
                     placeholder="Odds"
                   />
                 </div>
@@ -107,36 +117,36 @@ export default function ArbitrageCalculator() {
           <button
             onClick={addOutcome}
             disabled={outcomes.length >= 3}
-            className="w-full rounded-lg border border-green-700 px-4 py-3 font-semibold text-green-700 disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full rounded-lg border border-green-700 px-4 py-3 font-semibold text-green-700 transition-colors hover:bg-green-50 disabled:cursor-not-allowed disabled:opacity-50"
           >
             Add 3rd Outcome
           </button>
 
           <button
             onClick={handleCalculate}
-            className="w-full rounded-lg bg-green-700 px-4 py-3 font-semibold text-white"
+            className="w-full rounded-lg bg-green-700 px-4 py-3 font-semibold text-white transition-colors hover:bg-green-800"
           >
             Calculate Arbitrage
           </button>
         </div>
       </div>
 
-      <div className="rounded-xl border bg-white p-6 shadow-sm">
-        <h2 className="mb-4 text-2xl font-bold">Result</h2>
+      <div className="rounded-xl border border-gray-200 bg-white p-6 text-slate-900 shadow-sm">
+        <h2 className="mb-4 text-2xl font-bold text-slate-900">Result</h2>
 
         {error && (
           <div className="rounded-lg bg-red-50 p-4 text-red-700">{error}</div>
         )}
 
         {!result && !error && (
-          <p className="text-gray-500">
+          <p className="text-slate-600">
             Enter odds from different bookmakers to check if there is an arbitrage
             opportunity.
           </p>
         )}
 
         {result && (
-          <div className="space-y-4 text-sm">
+          <div className="space-y-4 text-sm text-slate-700">
             <div
               className={`rounded-lg p-4 ${
                 result.isArbitrage
@@ -150,25 +160,34 @@ export default function ArbitrageCalculator() {
             </div>
 
             <p>
-              <strong>Bankroll:</strong> ₦{result.bankroll.toLocaleString()}
+              <strong className="text-slate-900">Bankroll:</strong> ₦
+              {result.bankroll.toLocaleString()}
             </p>
 
             <p>
-              <strong>Total Implied Probability:</strong>{" "}
+              <strong className="text-slate-900">
+                Total Implied Probability:
+              </strong>{" "}
               {result.totalImpliedProbability}%
             </p>
 
             <p>
-              <strong>Profit Margin:</strong> {result.profitMargin}%
+              <strong className="text-slate-900">Profit Margin:</strong>{" "}
+              {result.profitMargin}%
             </p>
 
             <div className="space-y-3">
-              <h3 className="font-semibold">Recommended Stakes</h3>
+              <h3 className="font-semibold text-slate-900">
+                Recommended Stakes
+              </h3>
 
               {result.outcomes.map((outcome: any, index: number) => (
-                <div key={index} className="rounded-lg border p-3">
+                <div
+                  key={index}
+                  className="rounded-lg border border-gray-200 p-3 text-slate-700"
+                >
                   <p>
-                    <strong>{outcome.name}</strong>
+                    <strong className="text-slate-900">{outcome.name}</strong>
                   </p>
                   <p>Odds: {outcome.odds}</p>
                   <p>Stake: ₦{outcome.stake.toLocaleString()}</p>
@@ -178,14 +197,23 @@ export default function ArbitrageCalculator() {
             </div>
 
             <p>
-              <strong>Guaranteed Return:</strong> ₦
+              <strong className="text-slate-900">Guaranteed Return:</strong> ₦
               {result.guaranteedReturn.toLocaleString()}
             </p>
 
             <p>
-              <strong>Guaranteed Profit:</strong> ₦
+              <strong className="text-slate-900">Guaranteed Profit:</strong> ₦
               {result.guaranteedProfit.toLocaleString()}
             </p>
+
+            <SaveCalculationButton
+              type="arbitrage_calculator" 
+              input={{
+                bankroll,
+                outcomes,
+              }}
+              result={result}
+            /> 
           </div>
         )}
       </div>
