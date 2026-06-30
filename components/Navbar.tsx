@@ -9,10 +9,11 @@ export default function Navbar() {
         </Link>
 
         <div className="flex gap-6 text-sm font-medium text-gray-700">
-            <Link href="/tools/manual-slip-converter">Manual Converter</Link>
-            <Link href="/tools/odds-converter">Odds Converter</Link>
-            <Link href="/tools/implied-probability">Probability</Link>
-             <Link href="/tools/profit-calculator">Profit</Link>
+          <Link href="/tools/manual-slip-converter">Manual Converter</Link>
+          <Link href="/tools/odds-converter">Odds</Link>
+          <Link href="/tools/profit-calculator">Profit</Link>
+          <Link href="/tools/accumulator-calculator">Accumulator</Link>
+          <Link href="/tools/cashout-calculator">Cashout</Link>
         </div>
       </nav>
     </header>
