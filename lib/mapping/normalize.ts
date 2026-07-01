@@ -1,7 +1,68 @@
 import type { Bookmaker } from "./bookmakers";
-import { marketMappings } from "./markets";
+import { marketMappings, type Market } from "./markets";
 import { selectionMappings, reverseSelectionLabels } from "./selections";
 import { calculateConfidenceScore, getConfidenceLabel } from "./confidence";
+
+function normalizeText(value: string) {
+  return value.trim().toLowerCase();
+}
+
+function findCanonicalMarket(
+  sourceBookmaker: Bookmaker,
+  marketName: string
+): Market | undefined {
+  const sourceMappings = marketMappings[sourceBookmaker];
+
+  const sourceMatch = Object.entries(sourceMappings).find(
+    ([label]) => normalizeText(label) === normalizeText(marketName)
+  )?.[1];
+
+  if (sourceMatch) return sourceMatch;
+
+  for (const mappings of Object.values(marketMappings)) {
+    const fallbackMatch = Object.entries(mappings).find(
+      ([label]) => normalizeText(label) === normalizeText(marketName)
+    )?.[1];
+
+    if (fallbackMatch) return fallbackMatch;
+  }
+
+  return undefined;
+}
+
+function findCanonicalSelection({
+  canonicalMarket,
+  sourceBookmaker,
+  selectionName,
+}: {
+  canonicalMarket: Market;
+  sourceBookmaker: Bookmaker;
+  selectionName: string;
+}) {
+  const sourceMappings = selectionMappings[canonicalMarket]?.[sourceBookmaker];
+
+  const sourceMatch = sourceMappings
+    ? Object.entries(sourceMappings).find(
+        ([label]) => normalizeText(label) === normalizeText(selectionName)
+      )?.[1]
+    : undefined;
+
+  if (sourceMatch) return sourceMatch;
+
+  const allMarketMappings = selectionMappings[canonicalMarket];
+
+  if (!allMarketMappings) return undefined;
+
+  for (const mappings of Object.values(allMarketMappings)) {
+    const fallbackMatch = Object.entries(mappings).find(
+      ([label]) => normalizeText(label) === normalizeText(selectionName)
+    )?.[1];
+
+    if (fallbackMatch) return fallbackMatch;
+  }
+
+  return undefined;
+}
 
 export function convertManualSlip({
   sourceBookmaker,
@@ -14,7 +75,7 @@ export function convertManualSlip({
   marketName: string;
   selectionName: string;
 }) {
-  const canonicalMarket = marketMappings[sourceBookmaker][marketName];
+  const canonicalMarket = findCanonicalMarket(sourceBookmaker, marketName);
 
   if (!canonicalMarket) {
     return {
@@ -23,8 +84,11 @@ export function convertManualSlip({
     };
   }
 
-  const canonicalSelection =
-    selectionMappings[canonicalMarket]?.[sourceBookmaker]?.[selectionName];
+  const canonicalSelection = findCanonicalSelection({
+    canonicalMarket,
+    sourceBookmaker,
+    selectionName,
+  });
 
   if (!canonicalSelection) {
     return {
@@ -34,7 +98,7 @@ export function convertManualSlip({
   }
 
   const targetSelection =
-    reverseSelectionLabels[targetBookmaker][canonicalSelection];
+    reverseSelectionLabels[targetBookmaker]?.[canonicalSelection];
 
   if (!targetSelection) {
     return {
@@ -46,6 +110,13 @@ export function convertManualSlip({
   const targetMarketEntry = Object.entries(marketMappings[targetBookmaker]).find(
     ([, value]) => value === canonicalMarket
   );
+
+  if (!targetMarketEntry) {
+    return {
+      success: false,
+      message: "Target market label could not be found.",
+    };
+  }
 
   const confidenceScore = calculateConfidenceScore({
     teamMatchScore: 40,
@@ -61,7 +132,7 @@ export function convertManualSlip({
     targetBookmaker,
     canonicalMarket,
     canonicalSelection,
-    targetMarket: targetMarketEntry?.[0] || canonicalMarket,
+    targetMarket: targetMarketEntry[0],
     targetSelection,
     confidenceScore,
     confidenceLabel: getConfidenceLabel(confidenceScore),

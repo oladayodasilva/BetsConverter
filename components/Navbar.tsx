@@ -65,6 +65,12 @@ export default function Navbar() {
               Login
           </Link>
 
+          <Link 
+            href="/ai-assistant"
+            className="transition-colors hover:text-green-700"
+            >
+              AI
+          </Link>
 
         </div>
       </nav>

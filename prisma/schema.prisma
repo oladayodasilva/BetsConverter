@@ -14,6 +14,7 @@ model User {
   createdAt    DateTime      @default(now())
 
   calculations Calculation[]
+  aiChats      AiChat[]
 }
 
 model Calculation {
@@ -25,4 +26,14 @@ model Calculation {
   createdAt DateTime @default(now())
 
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model AiChat {
+  id        String   @id @default(cuid())
+  userId    String?
+  prompt    String
+  response  String
+  createdAt DateTime @default(now())
+
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
