@@ -66,6 +66,13 @@ export default function Navbar() {
           </Link>
 
           <Link 
+            href="/tools/real-code-reader"
+            className="transition-colors hover:text-green-700"
+          >
+            Real Reader
+          </Link>
+
+          <Link 
             href="/dashboard"
             className="transition-colors hover:text-green-700"
           >
