@@ -77,10 +77,12 @@ export default async function DashboardPage() {
 
         <Link
           href="/dashboard/ai-history"
-          className="rounded-xl border bg-white p-5 shadow-sm"
+          className="rounded-xl border border-gray-200 bg-white p-5 text-slate-900 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
         >
-          <h2 className="mb-2 font-bold">AI History</h2>
-          <p className="text-sm text-gray-600">
+          <h2 className="mb-2 font-bold text-slate-900">
+            AI History
+          </h2>
+          <p className="text-sm text-slate-600">
             Review your previous AI betting education chats.
           </p>
         </Link>

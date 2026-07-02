@@ -52,6 +52,20 @@ export default function Navbar() {
           </Link>
 
           <Link 
+            href="/ai-assistant"
+            className="transition-colors hover:text-green-700"
+            >
+              AI
+          </Link>
+
+          <Link 
+            href="/tools/booking-code-converter"
+            className="transition-colors hover:text-green-700"
+          >
+            Code Converter
+          </Link>
+
+          <Link 
             href="/dashboard"
             className="transition-colors hover:text-green-700"
           >
@@ -63,13 +77,6 @@ export default function Navbar() {
             className="transition-colors hover:text-green-700"
             >
               Login
-          </Link>
-
-          <Link 
-            href="/ai-assistant"
-            className="transition-colors hover:text-green-700"
-            >
-              AI
           </Link>
 
         </div>

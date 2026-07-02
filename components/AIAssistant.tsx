@@ -75,7 +75,7 @@ export default function AIAssistant() {
     <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
       <div className="rounded-xl border bg-white p-6 shadow-sm">
         <div className="mb-6">
-          <h2 className="text-2xl font-bold">BetsConverter AI</h2>
+          <h2 className="text-2xl text-gray-700">BetsConverter AI</h2>
           <p className="mt-2 text-sm text-gray-600">
             Ask about odds, profit, bankroll, accumulator risk, cashout decisions,
             and betting terms.
@@ -138,21 +138,23 @@ export default function AIAssistant() {
       </div>
 
       <aside className="rounded-xl border bg-white p-6 shadow-sm">
-        <h3 className="mb-4 font-bold">Try asking</h3>
+      <h3 className="mb-4 text-lg font-bold text-slate-900">
+        Try asking
+      </h3>
 
         <div className="space-y-3">
           {samplePrompts.map((prompt) => (
             <button
               key={prompt}
               onClick={() => sendMessage(prompt)}
-              className="w-full rounded-lg border p-3 text-left text-sm hover:bg-gray-50"
+              className="w-full rounded-lg border border-gray-300 bg-white p-3 text-left text-sm font-medium text-slate-900 transition-all hover:border-green-700 hover:bg-green-50 hover:text-green-700"
             >
               {prompt}
             </button>
           ))}
         </div>
 
-        <div className="mt-6 rounded-lg bg-yellow-50 p-4 text-sm text-yellow-800">
+        <div className="mt-6 rounded-lg border border-yellow-200 bg-yellow-50 p-4 text-sm text-yellow-900">
           BetsConverter AI does not provide sure odds, fixed games, or guaranteed
           betting predictions.
         </div>
