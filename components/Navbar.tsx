@@ -80,6 +80,13 @@ export default function Navbar() {
           </Link>
 
           <Link 
+            href="/dashboard/verification"
+            className="transition-colors hover:text-green-700"
+          >
+            Verify
+          </Link>
+
+          <Link 
             href="/dashboard"
             className="transition-colors hover:text-green-700"
           >

@@ -86,6 +86,16 @@ export default async function DashboardPage() {
             Review your previous AI betting education chats.
           </p>
         </Link>
+
+        <Link
+          href="/dashboard/verification"
+          className="rounded-xl border bg-white p-5 shadow-sm"
+        >
+          <h2 className="mb-2 font-bold">Verification Dashboard</h2>
+          <p className="text-sm text-gray-600">
+            Review and approve mapped bookmaker selections.
+          </p>
+        </Link>
       </div>
     </section>
   );

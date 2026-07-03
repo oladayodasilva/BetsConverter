@@ -1,0 +1,36 @@
+import type { VerificationItem } from "./types";
+
+export const mockVerificationQueue: VerificationItem[] = [
+  {
+    id: "verify_1",
+    sourceBookmaker: "SportyBet",
+    targetBookmaker: "Bet9ja",
+    sourceCode: "SP12345",
+    matchName: "Manchester United vs Chelsea",
+    sourceMarket: "MATCH_RESULT",
+    sourceSelection: "HOME_WIN",
+    sourceOdds: 2.1,
+    targetEvent: "Man Utd vs Chelsea",
+    targetMarket: "MATCH_RESULT",
+    targetSelection: "HOME_WIN",
+    targetOdds: 2.05,
+    confidenceScore: 95,
+    status: "PENDING",
+  },
+  {
+    id: "verify_2",
+    sourceBookmaker: "SportyBet",
+    targetBookmaker: "1xBet",
+    sourceCode: "SP12345",
+    matchName: "Barcelona vs Sevilla",
+    sourceMarket: "OVER_UNDER",
+    sourceSelection: "OVER_2_5",
+    sourceOdds: 1.75,
+    targetEvent: "FC Barcelona vs Sevilla",
+    targetMarket: "OVER_UNDER",
+    targetSelection: "OVER_2_5",
+    targetOdds: 1.78,
+    confidenceScore: 88,
+    status: "PENDING",
+  },
+];
