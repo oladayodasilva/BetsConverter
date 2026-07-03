@@ -73,6 +73,13 @@ export default function Navbar() {
           </Link>
 
           <Link 
+            href="/tools/structured-code-reader"
+            className="transition-colors hover:text-green-700"
+          >
+            Structured Reader
+          </Link>
+
+          <Link 
             href="/dashboard"
             className="transition-colors hover:text-green-700"
           >

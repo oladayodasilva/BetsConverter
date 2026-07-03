@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { readSportyBetCode } from "@/lib/readers/sportybetReader";
+import { parseSportyBetRawText } from "@/lib/readers/parsers/sportybetParser";
 
 export async function POST(request: Request) {
   try {
@@ -17,14 +18,26 @@ export async function POST(request: Request) {
 
     if (bookmaker !== "sportybet") {
       return NextResponse.json(
-        { message: "Only SportyBet reader is available in Week 8." },
+        { message: "Only SportyBet reader is available in Week 9." },
         { status: 400 }
       );
     }
 
     const result = await readSportyBetCode(code);
 
-    return NextResponse.json(result);
+    if (!result.success || !result.rawText) {
+      return NextResponse.json(result);
+    }
+
+    const parsedSlip = parseSportyBetRawText({
+      sourceCode: code,
+      rawText: result.rawText,
+    });
+
+    return NextResponse.json({
+      ...result,
+      parsedSlip,
+    });
   } catch {
     return NextResponse.json(
       { message: "Could not read booking code." },
