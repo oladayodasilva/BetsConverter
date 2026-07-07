@@ -3,6 +3,13 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 
+type AiChatItem = {
+  id: string;
+  prompt: string;
+  response: string;
+  createdAt: Date;
+};
+
 export default async function AIHistoryPage() {
   const session = await getServerSession(authOptions);
 
@@ -47,7 +54,7 @@ export default async function AIHistoryPage() {
       )}
 
       <div className="space-y-4">
-        {chats.map((chat) => (
+        {chats.map((chat: AiChatItem) => (
           <div key={chat.id} className="rounded-xl border bg-white p-5 shadow-sm">
             <p className="mb-2 text-xs text-gray-500">
               {new Date(chat.createdAt).toLocaleString()}
