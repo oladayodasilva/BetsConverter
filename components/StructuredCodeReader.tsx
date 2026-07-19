@@ -48,7 +48,9 @@ export default function StructuredCodeReader() {
       }
 
       const targetEvents =
-        targetBookmaker === "bet9ja" ? mockBet9jaEvents : mockOneXBetEvents;
+        targetBookmaker === "bet9ja"
+          ? mockBet9jaEvents
+          : mockOneXBetEvents;
 
       const conversion = convertSlipToTarget({
         slip: data.parsedSlip,
@@ -65,8 +67,11 @@ export default function StructuredCodeReader() {
 
   return (
     <div className="grid gap-8 lg:grid-cols-[380px_1fr]">
+      {/* Left Panel */}
       <div className="rounded-xl border bg-white p-6 shadow-sm">
-        <h2 className="mb-4 text-2xl font-bold">Structured Code Reader</h2>
+        <h2 className="mb-4 text-2xl font-bold">
+          Structured Code Reader
+        </h2>
 
         <div className="space-y-4">
           <input
@@ -81,6 +86,7 @@ export default function StructuredCodeReader() {
             onChange={(e) => setTargetBookmaker(e.target.value)}
             className="w-full rounded-lg border px-3 py-2"
           >
+            <option value="sportybet">Map to SportyBet</option>
             <option value="bet9ja">Map to Bet9ja</option>
             <option value="onexbet">Map to 1xBet</option>
           </select>
@@ -94,15 +100,18 @@ export default function StructuredCodeReader() {
           </button>
 
           <div className="rounded-lg bg-yellow-50 p-4 text-sm text-yellow-800">
-            Week 9 converts raw reader output into structured selections, then maps
-            them against mock target bookmaker events.
+            Converts raw reader output into structured selections, then
+            maps them against mock target bookmaker events.
           </div>
         </div>
       </div>
 
+      {/* Right Panel */}
       <div className="space-y-6">
         {error && (
-          <div className="rounded-lg bg-red-50 p-4 text-red-700">{error}</div>
+          <div className="rounded-lg bg-red-50 p-4 text-red-700">
+            {error}
+          </div>
         )}
 
         {!result && !error && (
@@ -117,15 +126,20 @@ export default function StructuredCodeReader() {
 
             {result.parsedSlip.parserWarnings?.length > 0 && (
               <div className="mb-4 rounded-lg bg-yellow-50 p-4 text-sm text-yellow-800">
-                {result.parsedSlip.parserWarnings.map((warning: string) => (
-                  <p key={warning}>{warning}</p>
-                ))}
+                {result.parsedSlip.parserWarnings.map(
+                  (warning: string) => (
+                    <p key={warning}>{warning}</p>
+                  )
+                )}
               </div>
             )}
 
             <div className="space-y-4">
               {result.parsedSlip.selections.map((selection: any) => (
-                <div key={selection.id} className="rounded-lg border p-4 text-sm">
+                <div
+                  key={selection.id}
+                  className="rounded-lg border p-4 text-sm"
+                >
                   <p className="font-bold">
                     {selection.homeTeam} vs {selection.awayTeam}
                   </p>
@@ -150,66 +164,129 @@ export default function StructuredCodeReader() {
 
         {mappingResult && (
           <div className="rounded-xl border bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-2xl font-bold">Mapping Result</h2>
+            <h2 className="mb-4 text-2xl font-bold text-slate-900">
+              Mapping Result
+            </h2>
 
             <div className="mb-4 rounded-lg bg-green-50 p-4 text-green-800">
-              {mappingResult.matchedCount} of {mappingResult.totalSelections} selections matched.
+              {mappingResult.matchedCount} of{" "}
+              {mappingResult.totalSelections} selections matched.
             </div>
 
             <div className="space-y-4">
-              {mappingResult.convertedSelections.map((item: any) => (
-                <div key={item.sourceSelection.id} className="rounded-lg border p-4 text-sm">
-                  <p className="mb-2 font-bold">
-                    {item.sourceSelection.homeTeam} vs {item.sourceSelection.awayTeam}
-                  </p>
+              {mappingResult.convertedSelections.map(
+                (item: any, index: number) => {
+                  const source =
+                    item.sourceSelection ??
+                    result?.parsedSlip?.selections?.[index] ??
+                    null;
 
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <div>
-                      <p className="font-semibold">Source</p>
-                      <p>Market: {item.sourceSelection.market}</p>
-                      <p>Selection: {item.sourceSelection.selection}</p>
-                      <p>Odds: {item.sourceSelection.odds}</p>
-                    </div>
+                  return (
+                    <div
+                      key={source?.id ?? `selection-${index}`}
+                      className="rounded-lg border p-4 text-sm text-slate-700"
+                    >
+                      <p className="mb-3 font-bold text-slate-900">
+                        {source
+                          ? `${source.homeTeam} vs ${source.awayTeam}`
+                          : "Selection unavailable"}
+                      </p>
 
-                    <div>
-                      <p className="font-semibold">Target</p>
-                      {item.matchedEvent ? (
-                        <>
-                          <p>
-                            Event: {item.matchedEvent.homeTeam} vs{" "}
-                            {item.matchedEvent.awayTeam}
+                      <div className="grid gap-4 md:grid-cols-2">
+                        {/* Source */}
+                        <div>
+                          <p className="mb-2 font-semibold text-slate-900">
+                            Source
                           </p>
-                          <p>Market: {item.targetMarket || "Not found"}</p>
-                          <p>
-                            Selection:{" "}
-                            {item.targetSelection
-                              ? `${item.targetSelection.selection} @ ${item.targetSelection.odds}`
-                              : "Not found"}
-                          </p>
-                        </>
-                      ) : (
-                        <p>Not matched</p>
-                      )}
-                    </div>
-                  </div>
 
-                  <div className="mt-4 flex justify-between rounded-lg bg-gray-50 p-3">
-                    <span>Status: {item.status}</span>
-                    <span>Confidence: {item.confidenceScore}%</span>
-                  </div>
-                </div>
-              ))}
+                          {source ? (
+                            <>
+                              <p>
+                                <strong>League:</strong>{" "}
+                                {source.league ?? "Unknown"}
+                              </p>
+
+                              <p>
+                                <strong>Market:</strong>{" "}
+                                {source.market}
+                              </p>
+
+                              <p>
+                                <strong>Selection:</strong>{" "}
+                                {source.selection}
+                              </p>
+
+                              <p>
+                                <strong>Odds:</strong>{" "}
+                                {source.odds ?? "Not detected"}
+                              </p>
+
+                              <p>
+                                <strong>Confidence:</strong>{" "}
+                                {source.confidence ?? "N/A"}
+                                {typeof source.confidence === "number"
+                                  ? "%"
+                                  : ""}
+                              </p>
+                            </>
+                          ) : (
+                            <p>No source selection returned.</p>
+                          )}
+                        </div>
+
+                        {/* Target */}
+                        <div>
+                          <p className="mb-2 font-semibold text-slate-900">
+                            Target
+                          </p>
+
+                          {item.matchedEvent ? (
+                            <>
+                              <p>
+                                <strong>Event:</strong>{" "}
+                                {item.matchedEvent.homeTeam} vs{" "}
+                                {item.matchedEvent.awayTeam}
+                              </p>
+
+                              <p>
+                                <strong>Market:</strong>{" "}
+                                {item.targetMarket ?? "Not found"}
+                              </p>
+
+                              <p>
+                                <strong>Selection:</strong>{" "}
+                                {item.targetSelection
+                                  ? `${item.targetSelection.selection} @ ${
+                                      item.targetSelection.odds ??
+                                      "No odds"
+                                    }`
+                                  : "Not found"}
+                              </p>
+                            </>
+                          ) : (
+                            <p className="text-red-600">
+                              No matching event found.
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="mt-4 flex flex-wrap items-center justify-between rounded-lg bg-slate-50 p-3">
+                        <span>
+                          <strong>Status:</strong> {item.status}
+                        </span>
+
+                        <span>
+                          <strong>Confidence:</strong>{" "}
+                          {item.confidenceScore}%
+                        </span>
+                      </div>
+                    </div>
+                  );
+                }
+              )}
             </div>
           </div>
-        )}
-
-        {result?.rawText && (
-          <details className="rounded-xl border bg-white p-6 shadow-sm">
-            <summary className="cursor-pointer font-bold">View Raw Text</summary>
-            <pre className="mt-4 max-h-[400px] overflow-auto rounded-lg bg-gray-50 p-4 text-xs">
-              {result.rawText}
-            </pre>
-          </details>
         )}
       </div>
     </div>
