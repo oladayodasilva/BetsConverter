@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { readSportyBetCode } from "@/lib/readers/sportybetReader";
 import { parseSportyBetRawText } from "@/lib/readers/parsers/sportybetParser";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(request: Request) {
   try {
@@ -11,21 +12,38 @@ export async function POST(request: Request) {
 
     if (!bookmaker || !code) {
       return NextResponse.json(
-        { message: "Bookmaker and code are required." },
-        { status: 400 }
+        {
+          message: "Bookmaker and code are required.",
+        },
+        {
+          status: 400,
+        }
       );
     }
 
     if (bookmaker !== "sportybet") {
       return NextResponse.json(
-        { message: "Only SportyBet reader is available in Week 9." },
-        { status: 400 }
+        {
+          message: "Only SportyBet reader is available for now.",
+        },
+        {
+          status: 400,
+        }
       );
     }
 
     const result = await readSportyBetCode(code);
 
     if (!result.success || !result.rawText) {
+      await prisma.codeReadTest.create({
+        data: {
+          bookmaker,
+          code,
+          success: false,
+          errorMessage: result.message || "Reader failed.",
+        },
+      });
+
       return NextResponse.json(result);
     }
 
@@ -34,14 +52,37 @@ export async function POST(request: Request) {
       rawText: result.rawText,
     });
 
+    const parsedSlipJson = JSON.parse(
+      JSON.stringify(parsedSlip)
+    );
+
+    await prisma.codeReadTest.create({
+      data: {
+        bookmaker,
+        code,
+        success: true,
+        rawText: result.rawText,
+        parsedSlip: parsedSlipJson,
+      },
+    });
+
     return NextResponse.json({
       ...result,
       parsedSlip,
     });
-  } catch {
+  } catch (error: unknown) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Could not read booking code.";
+
     return NextResponse.json(
-      { message: "Could not read booking code." },
-      { status: 500 }
+      {
+        message,
+      },
+      {
+        status: 500,
+      }
     );
   }
 }

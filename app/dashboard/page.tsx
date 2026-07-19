@@ -96,6 +96,16 @@ export default async function DashboardPage() {
             Review and approve mapped bookmaker selections.
           </p>
         </Link>
+
+        <Link
+          href="/dashboard/code-tests"
+          className="rounded-xl border bg-white p-5 shadow-sm"
+        >
+          <h2 className="mb-2 font-bold">Code Reader Tests</h2>
+          <p className="text-sm text-gray-600">
+            Review successful and failed real booking-code reads.
+          </p>
+        </Link>
       </div>
     </section>
   );

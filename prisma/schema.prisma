@@ -6,12 +6,23 @@ datasource db {
   provider = "postgresql"
 }
 
+model CodeReadTest {
+  id           String   @id @default(cuid())
+  bookmaker    String
+  code         String
+  success      Boolean
+  rawText      String?
+  parsedSlip   Json?
+  errorMessage String?
+  createdAt    DateTime @default(now())
+}
+
 model User {
-  id           String        @id @default(cuid())
-  name         String?
-  email        String        @unique
-  password     String
-  createdAt    DateTime      @default(now())
+  id        String   @id @default(cuid())
+  name      String?
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
 
   calculations Calculation[]
   aiChats      AiChat[]
@@ -25,7 +36,7 @@ model Calculation {
   result    Json
   createdAt DateTime @default(now())
 
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model AiChat {
@@ -35,5 +46,5 @@ model AiChat {
   response  String
   createdAt DateTime @default(now())
 
-  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
